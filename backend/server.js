@@ -17,7 +17,8 @@ app.use(express.json());
 
 const allowedOrigins = [
   "https://mohipal-donater-group.vercel.app",
-  "http://localhost:3000" 
+  "http://localhost:3000",
+   "https://mohipal-donater-group.onrender.com" 
 ];
 
 const corsOptions = {
