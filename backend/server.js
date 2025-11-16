@@ -69,6 +69,10 @@ app.post("/api/donors", upload.single("image"), async (req, res) => {
   }
 });
 
+app.get('/', (req,res) =>{
+  res.status(200).send("Welcome to our Mohipal blood donor api.")
+})
+
 // Serve uploaded images
 app.use("/uploads", express.static("uploads"));
 
