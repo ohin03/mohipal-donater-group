@@ -41,10 +41,37 @@ function App() {
         />
         <Route path="/admin" element={<AdminPanel />} />
       </Routes>
+    <footer className="text-center mt-4 py-3" style={{ background: "#f8f9fa" }}>
+  <div className="container">
 
-      <footer className="text-center text-muted mt-4 mb-3">
-        © Started journey at 2025 BloodLink | Developed by Nextfolio ❤
-      </footer>
+    {/* Company Short Description */}
+    <p className="text-muted mb-1" style={{ fontSize: "14px" }}>
+      <strong>Nextfolio</strong> — We build modern and fully functional
+      websites including complete Frontend & Backend development services.
+    </p>
+
+    {/* Copyright */}
+    <p className="text-muted mb-3" style={{ fontSize: "13px" }}>
+      © start journey at 2025 BloodLink | Developed with ❤ by Nextfolio
+    </p>
+
+    {/* Buttons */}
+    <div>
+      {/* Facebook Page */}
+      <a
+        href="https://www.facebook.com/share/1FwCs63kuJ/?mibextid=wwXIfr"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="btn btn-primary btn-sm me-2"
+      >
+        👍 Our Facebook Page
+      </a>
+    </div>
+
+  </div>
+</footer>
+
+
     </Router>
   );
 }
