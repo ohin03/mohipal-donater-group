@@ -7,7 +7,7 @@ const DonorList = () => {
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/donors")
+    axios.get(`${process.env.REACT_APP_API_URL}/api/donors`)
       .then(res => setDonors(res.data))
       .catch(err => console.log(err));
   }, []);
@@ -73,7 +73,7 @@ const DonorList = () => {
             }}
           >
             <img
-              src={`http://localhost:5000/uploads/${donor.image}`}
+              src={`${process.env.REACT_APP_API_URL}/uploads/${donor.image}`}
               alt={donor.name}
               style={{ width: "100%", height: "150px", objectFit: "cover", borderRadius: "8px" }}
             />
@@ -96,4 +96,3 @@ const DonorList = () => {
 };
 
 export default DonorList;
-

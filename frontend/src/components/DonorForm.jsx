@@ -14,7 +14,7 @@ const DonorForm = () => {
     formData.append("location", e.target.location.value);
     formData.append("phone", e.target.phone.value);
 
-    await axios.post("http://localhost:5000/api/donors", formData, {
+    await axios.post(`${process.env.REACT_APP_API_URL}/api/donors`, formData, {
       headers: { "Content-Type": "multipart/form-data" }
     });
 
@@ -132,4 +132,3 @@ const DonorForm = () => {
 };
 
 export default DonorForm;
-

@@ -5,13 +5,13 @@ function AdminPanel() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [password, setPassword] = useState("");
   const [donors, setDonors] = useState([]);
-  const ADMIN_PASSWORD = "blood123";
+  
 
 
 
 const loginAdmin = async () => {
   try {
-    const res = await axios.post("http://localhost:5000/api/admin/login", { password });
+    const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/admin/login`, { password });
     if (res.data.success) setIsAdmin(true);
   } catch (err) {
     alert("❌ Wrong password!");
