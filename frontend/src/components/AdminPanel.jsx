@@ -19,12 +19,12 @@ const loginAdmin = async () => {
 };
  
   const fetchDonors = () => {
-    axios.get("http://localhost:5000/api/donors").then(res => setDonors(res.data));
+    axios.get(`${process.env.REACT_APP_API_URL}/api/donors`).then(res => setDonors(res.data));
   };
 
   const deleteDonor = async (id) => {
     if (window.confirm("Are you sure you want to delete this donor?")) {
-      await axios.delete(`http://localhost:5000/api/donors/${id}`);
+      await axios.delete(`${process.env.REACT_APP_API_URL}/api/donors/${id}`);
       fetchDonors();
     }
   };
