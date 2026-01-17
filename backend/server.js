@@ -7,6 +7,7 @@ import Donor from "./models/donorModel.js";
 import fs from "fs";
 import path from "path";
 import dotenv from "dotenv";
+
 dotenv.config();
 
 const url = process.env.MONGO_URL;
@@ -71,6 +72,8 @@ app.post("/api/admin/login", (req, res) => {
 });
 
 // POST donor with image
+
+// POST donor with image (Buffer version)
 app.post("/api/donors", upload.single("image"), async (req, res) => {
   try {
     if (!req.file) {
@@ -82,7 +85,11 @@ app.post("/api/donors", upload.single("image"), async (req, res) => {
       bloodGroup: req.body.bloodGroup,
       location: req.body.location,
       phone: req.body.phone,
-      image: req.file.filename,
+
+      image: {
+        data: req.file.buffer,
+        contentType: req.file.mimetype,
+      },
     });
 
     await donor.save();
@@ -92,7 +99,6 @@ app.post("/api/donors", upload.single("image"), async (req, res) => {
     res.status(500).json({ message: "Error adding donor" });
   }
 });
-
 app.get("/", (req, res) => {
   res.status(200).send("Welcome to our Mohipal blood donor api.");
 });
