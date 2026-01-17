@@ -3,9 +3,16 @@ import axios from "axios";
 
 const DonorForm = () => {
   const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!image) {
+      alert("Please upload an image");
+      return;
+    }
 
     const formData = new FormData();
     formData.append("image", image);
@@ -14,11 +21,29 @@ const DonorForm = () => {
     formData.append("location", e.target.location.value);
     formData.append("phone", e.target.phone.value);
 
-    await axios.post(`${process.env.REACT_APP_API_URL}/api/donors`, formData, {
-      headers: { "Content-Type": "multipart/form-data" }
-    });
+    try {
+      setLoading(true);
 
-    alert("Donor Added!");
+      await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/donors`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+
+      alert("✅ Donor added successfully!");
+
+      // Reset form
+      e.target.reset();
+      setImage(null);
+      setPreview(null);
+    } catch (error) {
+      console.error(error);
+      alert("❌ Failed to add donor");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -32,12 +57,11 @@ const DonorForm = () => {
         </h3>
 
         <form onSubmit={handleSubmit}>
-
           {/* Image Upload */}
           <div className="mb-3">
             <label className="form-label fw-semibold">Profile Image</label>
 
-            <div className="p-3 border rounded d-flex justify-content-between align-items-center bg-light">
+            <div className="p-3 border rounded bg-light">
               <label
                 className="btn btn-outline-primary fw-semibold px-4"
                 style={{ cursor: "pointer" }}
@@ -47,17 +71,37 @@ const DonorForm = () => {
                   type="file"
                   accept="image/*"
                   className="d-none"
-                  onChange={(e) => setImage(e.target.files[0])}
                   required
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    setImage(file);
+                    setPreview(URL.createObjectURL(file));
+                  }}
                 />
               </label>
 
-              {image ? (
-                <span className="text-success fw-semibold">
-                  ✔ {image.name}
-                </span>
-              ) : (
-                <span className="text-muted">No file chosen</span>
+              <div className="mt-2">
+                {image ? (
+                  <span className="text-success fw-semibold">
+                    ✔ {image.name}
+                  </span>
+                ) : (
+                  <span className="text-muted">No file chosen</span>
+                )}
+              </div>
+
+              {preview && (
+                <img
+                  src={preview}
+                  alt="Preview"
+                  style={{
+                    width: "120px",
+                    height: "120px",
+                    objectFit: "cover",
+                    borderRadius: "10px",
+                    marginTop: "10px",
+                  }}
+                />
               )}
             </div>
           </div>
@@ -74,7 +118,7 @@ const DonorForm = () => {
             />
           </div>
 
-          {/* Blood Group (Beautiful Select) */}
+          {/* Blood Group */}
           <div className="mb-3">
             <label className="form-label fw-semibold">Blood Group</label>
             <select
@@ -95,7 +139,7 @@ const DonorForm = () => {
           </div>
 
           {/* Location */}
-           <div className="mb-3">
+          <div className="mb-3">
             <label className="form-label fw-semibold">Location</label>
             <input
               type="text"
@@ -106,7 +150,6 @@ const DonorForm = () => {
             />
           </div>
 
-
           {/* Phone */}
           <div className="mb-3">
             <label className="form-label fw-semibold">Phone Number</label>
@@ -116,14 +159,17 @@ const DonorForm = () => {
               className="form-control form-control-lg"
               placeholder="Phone number"
               required
-              pattern="^(?:\+8801|01)[0-9]{9}$"
+              pattern="^(?:\\+8801|01)[0-9]{9}$"
               title="Valid BD number: 01XXXXXXXXX বা +8801XXXXXXXXX"
-              />
-
+            />
           </div>
 
-          <button className="btn btn-danger w-100 fw-bold mt-3 py-2" type="submit">
-            Submit Donor
+          <button
+            className="btn btn-danger w-100 fw-bold mt-3 py-2"
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? "Submitting..." : "Submit Donor"}
           </button>
         </form>
       </div>
