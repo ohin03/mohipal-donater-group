@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const donorSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
-    image: { type: Buffer, contentType: String },
+    image: { type: String },
     bloodGroup: { type: String, required: true },
     location: { type: String, required: true },
     phone: { type: String },
@@ -12,4 +12,3 @@ const donorSchema = new mongoose.Schema(
 );
 
 export default mongoose.model("Donor", donorSchema);
-
