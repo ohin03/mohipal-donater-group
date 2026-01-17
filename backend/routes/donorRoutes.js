@@ -1,3 +1,4 @@
+
 import express from "express";
 import Donor from "../models/donorModel.js";
 
@@ -15,10 +16,10 @@ router.get("/", async (req, res) => {
         { location: { $regex: q, $options: "i" } },
         { phone: { $regex: q, $options: "i" } },
       ],
-    }).select("-image"); // image buffer বাদ
-
+    });
     res.json(donors);
   } catch (err) {
+    console.log("GET donors ERROR:", err);
     res.status(500).json({ message: "Error fetching donors" });
   }
 });
@@ -29,6 +30,7 @@ router.delete("/:id", async (req, res) => {
     await Donor.findByIdAndDelete(req.params.id);
     res.json({ message: "Donor deleted successfully" });
   } catch (err) {
+    console.log("DELETE donor ERROR:", err);
     res.status(500).json({ message: "Error deleting donor" });
   }
 });
